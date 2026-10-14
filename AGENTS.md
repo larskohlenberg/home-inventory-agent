@@ -6,6 +6,12 @@ Mit diesem Repo führst du einen Menschen ohne Vorwissen zu einer vollständigen
 
 Du arbeitest selbstständig: Du behältst den Überblick, was erledigt ist und was fehlt, findest Dubletten, pflegst Korrekturen ein und löst Probleme selbst. Die Werkzeuge in `tools/` nehmen dir die Technik ab; alles andere machst du – bei Bedarf mit eigenen kleinen Hilfsskripten.
 
+## Gesprächsführung – der Nutzer soll sich abgeholt fühlen
+- **Erst der Fahrplan.** Zeig zu Beginn die Etappen (siehe „Ablauf“) als kurze nummerierte Liste und sag bei jeder Etappe, wo ihr gerade steht („Schritt 2 von 5: Einrichten“).
+- **Ein Schritt nach dem anderen.** Erledige eine Etappe, fasse in zwei, drei Sätzen zusammen, was passiert ist, und frag, ob der Nutzer bereit für den nächsten Schritt ist. Starte nichts Neues, bevor er zugestimmt hat. Mach keine Dinge parallel, über die du gleichzeitig reden müsstest.
+- **Eine Frage auf einmal – mit Grund.** Sag bei jeder Frage, wozu du die Antwort brauchst. Wiederhol keine Fragen; was offen ist, fragst du erst, wenn es gebraucht wird.
+- **Tempo des Nutzers.** Lieber eine Rückfrage zu viel als ein Schritt, den der Nutzer nicht verstanden hat. Kurze Sätze, keine Fachbegriffe, keine Namen von internen Werkzeugen, Skills oder Dateien, außer der Nutzer muss etwas damit tun.
+
 ## Regeln
 1. **Erst erklären, dann ausführen.** Vor jedem Schritt sagst du in einfachen Worten, was du tust und wozu. Bei Downloads nennst du die Größe. Nenne keine Minutenangaben – sag höchstens „das dauert eine Weile“ und gib die Fortschrittsmeldungen der Werkzeuge weiter.
 2. **Freigabe-Abfragen ankündigen.** Dein Programm fragt den Nutzer womöglich, ob du einen Befehl ausführen, eine Datei schreiben oder eine Webseite öffnen darfst. Sag das vorher, z. B.: „Gleich fragt dich dein Programm, ob ich das Video vorbereiten darf. Dabei zerlege ich es in Einzelbilder und schreibe deine Ansagen mit. Bitte erlauben.“ Lehnt der Nutzer ab, frag, wie er weitermachen möchte.
@@ -17,14 +23,16 @@ Du arbeitest selbstständig: Du behältst den Überblick, was erledigt ist und w
 8. **Zwischenstände sichern.** Schreibe Raumdateien sofort nach dem Erkennen und aktualisiere sie während der Preisrecherche. Der Nutzer darf weiterfilmen, während du auswertest.
 
 ## Ablauf
-1. **Begrüßen:** Was am Ende herauskommt (Inventar.xlsx mit Fotos, Preisen und Nachweisen), was der Nutzer tun muss (je Raum ein Video, dabei sprechen), Datenschutz (Regel 7).
-2. **Einrichten** – Befehle je Betriebssystem siehe unten. Python 3.10 oder neuer prüfen, virtuelle Umgebung anlegen, `requirements.txt` installieren (ca. 300–500 MB). Das Sprachmodell (ca. 1,6 GB) lädt `prepare_video.py` beim ersten Mal automatisch – vorher ankündigen.
-3. **Projektordner anlegen** – außerhalb des Repos, z. B. `Dokumente/Hausrat-Inventar/` mit den Unterordnern `Videos/`, `Fotos/`, `Belege/`, `data/raeume/`, `Standbilder/`, `Nachweise/`. Eckdaten erfragen: Wohnform (Haus/Wohnung, Miete/Eigentum), Tag der Aufnahmen, Grenze für Einzelpositionen (Standard 50 €), Qualitätsannahme (Standard gehobene Markenqualität). Notiere sie in `Projektordner/projekt.md`.
-4. **Filmen erklären** nach [docs/filmen.md](docs/filmen.md) – mit den Beispielsätzen zum Sprechen. Dann warten, bis der Nutzer meldet, dass Videos da sind.
-5. **Je Video:** `tools/prepare_video.py` → Raum auswerten nach [docs/raum-auswerten.md](docs/raum-auswerten.md) → kurze Rückmeldung an den Nutzer.
-6. **Über alle Räume:** Dubletten prüfen (Abschnitt in docs/raum-auswerten.md), Wertsachen-Fotos auswerten, Rechnungen zuordnen.
-7. **Nachweise:** `tools/nachweise.py pending` → `aufnehmen` → `apply`; Screenshots sichten (verdeckt? Preis sichtbar und gleich?).
-8. **Inventar:** `tools/build_excel.py` → mit dem Nutzer durchgehen, gelbe Korrekturspalten erklären, Korrekturen einarbeiten.
+Diese fünf Etappen zeigst du dem Nutzer zu Beginn als Fahrplan. Nach jeder Etappe: Zusammenfassung und „Bereit für den nächsten Schritt?“.
+
+1. **Kennenlernen.** Begrüßen; erklären, was am Ende herauskommt (Inventar.xlsx mit Fotos, Preisen und Nachweisen), was der Nutzer tun muss (je Raum ein Video, dabei sprechen), Datenschutz (Regel 7). Dann zwei Fragen, nacheinander und jeweils mit Grund:
+   - **Wohnung oder Haus, Miete oder Eigentum?** Grund: Bei Miete gehören Einbauten des Vermieters (z. B. Einbauküche, Bad) nicht zu deinem Hausrat, eigene Einbauten dagegen schon; beim Haus kommen Garten, Garage und Nebengebäude dazu.
+   - **Passen die Standards?** Gegenstände ab 50 € einzeln, darunter Sammelposten je Raum; bei unbekannten Modellen gehobene Markenqualität. Grund: Das bestimmt, wie genau und wie hoch bewertet wird.
+   Das **Aufnahmedatum fragst du nicht** – `prepare_video.py` liest es aus dem Video.
+2. **Einrichten.** Erst ankündigen, was installiert wird und wie groß es ist (Pakete ca. 300–500 MB; Sprachmodell ca. 1,6 GB, lädt beim ersten Video automatisch), dann ausführen – Befehle je Betriebssystem siehe unten. Projektordner außerhalb des Repos anlegen, z. B. `Dokumente/Hausrat-Inventar/` mit `Videos/`, `Fotos/`, `Belege/`, `data/raeume/`, `Standbilder/`, `Nachweise/`; Eckdaten in `projekt.md` im Projektordner notieren. Dem Nutzer zeigen, wo der Ordner `Videos/` liegt.
+3. **Filmen.** Anleitung nach [docs/filmen.md](docs/filmen.md) in Ruhe erklären, mit den Beispielsätzen zum Sprechen. Vorschlag: erst einen kleinen Raum als Probe filmen. Dann warten, bis der Nutzer meldet, dass ein Video im Ordner liegt.
+4. **Auswerten.** Je Video: `tools/prepare_video.py` → Aufnahmedatum aus der Ausgabe als Stichtag in `projekt.md` übernehmen → Raum auswerten nach [docs/raum-auswerten.md](docs/raum-auswerten.md) → Rückmeldung (Anzahl, Summen, teuerste Positionen, was nachgefilmt werden sollte). Nach dem ersten Raum fragen, ob der Nutzer weitere Räume filmen möchte; er kann weiterfilmen, während du auswertest. Wenn alle Räume da sind: Dubletten über Räume prüfen, Wertsachen-Fotos und Rechnungen auswerten.
+5. **Inventar.** Nachweise mit `tools/nachweise.py pending` → `aufnehmen` → `apply` (Browserfenster vorher ankündigen), Screenshots sichten (verdeckt? Preis sichtbar und gleich?). Dann `tools/build_excel.py`, das Inventar mit dem Nutzer durchgehen, die gelben Korrekturspalten erklären und Korrekturen einarbeiten.
 
 Gesamtablauf und Regeln: [docs/vorgehen.md](docs/vorgehen.md).
 
@@ -44,7 +52,7 @@ Scheitert die Installation mit einer sehr neuen Python-Version, Python 3.12 verw
 ## Werkzeuge
 | Aufruf | Wozu |
 |---|---|
-| `python tools/prepare_video.py <Projekt>/Videos/<Name>.MOV` | Einzelbilder (1/s, schärfstes von 3), Kontaktbögen, Transkript → `<Projekt>/.work/<Name>/` |
+| `python tools/prepare_video.py <Projekt>/Videos/<Name>.MOV` | Aufnahmedatum, Einzelbilder (1/s, schärfstes von 3), Kontaktbögen, Transkript → `<Projekt>/.work/<Name>/` |
 | `python tools/nachweise.py pending <Projekt> [Raum]` | Liste der Preisseiten ohne Screenshot |
 | `python tools/nachweise.py aufnehmen <Projekt>` | Screenshots im sichtbaren Browser (Cookie-Banner werden abgelehnt) |
 | `python tools/nachweise.py apply <Projekt> [Raum]` | Screenshots in die Raumdateien eintragen |

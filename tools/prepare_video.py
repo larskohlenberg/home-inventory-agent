@@ -7,14 +7,17 @@
 - transkribiert die Ansagen lokal mit faster-whisper (VAD gegen Halluzinationen bei Stille)
 
 Aufruf:  python tools/prepare_video.py <Projektordner>/Videos/Kueche_EG.MOV [--sprache de] [--ohne-transkript]
-Ausgabe: <Projektordner>/.work/<Videoname>/{frames,sheets,transcript.txt}
+Ausgabe: <Projektordner>/.work/<Videoname>/{frames,sheets,transcript.txt,aufnahmedatum.txt}
+Das Aufnahmedatum (Stichtag) wird aus den Videodaten gelesen, ersatzweise aus dem Dateidatum.
 
 Beim ersten Transkript lädt faster-whisper das Sprachmodell (large-v3-turbo, ca. 1,6 GB).
 """
 import argparse
+import re
 import shutil
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageStat
@@ -41,6 +44,21 @@ def run_ffmpeg(*args):
     erg = subprocess.run([ffmpeg(), "-v", "error", "-y", *args], capture_output=True, text=True)
     if erg.returncode:
         sys.exit(f"ffmpeg-Fehler: {erg.stderr.strip()[-400:]}\nIst die Videodatei vollständig kopiert?")
+
+
+def aufnahmedatum(video: Path) -> str:
+    """Aufnahmezeitpunkt aus den Videodaten (iPhone/Android), sonst Dateidatum."""
+    info = subprocess.run([ffmpeg(), "-hide_banner", "-i", str(video)], capture_output=True, text=True,
+                          encoding="utf-8", errors="replace").stderr
+    for schluessel in ("com.apple.quicktime.creationdate", "creation_time"):
+        m = re.search(rf"{re.escape(schluessel)}\s*:\s*(\S+)", info)
+        if m:
+            try:
+                zeit = datetime.fromisoformat(m.group(1).replace("Z", "+00:00"))
+                return f"{zeit.astimezone():%d.%m.%Y %H:%M} (aus den Videodaten)"
+            except ValueError:
+                continue
+    return f"{datetime.fromtimestamp(video.stat().st_mtime):%d.%m.%Y %H:%M} (Dateidatum – bitte prüfen)"
 
 
 def arbeitsordner(video: Path) -> Path:
@@ -146,6 +164,9 @@ def main():
         sys.exit(f"Video nicht gefunden: {video}")
     work = arbeitsordner(video)
     work.mkdir(parents=True, exist_ok=True)
+    datum = aufnahmedatum(video)
+    (work / "aufnahmedatum.txt").write_text(datum + "\n", encoding="utf-8")
+    print(f"Aufgenommen: {datum}", flush=True)
     frames = extract_frames(video, work)
     sheets = build_sheets(frames, work)
     if args.ohne_transkript:
@@ -153,6 +174,7 @@ def main():
         (work / "transcript.txt").write_text(txt + "\n", encoding="utf-8")
     else:
         txt = transcribe(video, work, args.sprache, args.modell)
+    print(f"Aufgenommen: {datum}")
     print(f"Arbeitsordner: {work}")
     print(f"{len(frames)} Einzelbilder (frames/tMMmSSs.jpg), {len(sheets)} Kontaktbögen (sheets/)")
     print("Transkript:\n" + txt)

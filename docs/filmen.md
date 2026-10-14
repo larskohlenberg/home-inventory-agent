@@ -7,7 +7,7 @@ Der Agent erklärt diese Punkte dem Nutzer in eigenen Worten.
 - **Langsam schwenken.** Schränke und Schubladen öffnen und jeweils ca. 2 Sekunden stillhalten.
 - **Typenschilder** von Elektrogeräten kurz zeigen (Waschmaschine, Fernseher, Kaffeemaschine …).
 - **Kleiderschränke** einmal offen filmen.
-- **Alles an einem Tag** (Stichtag). Gezählt wird, was im Video zu sehen ist – auch abgelegte Kleidung oder Wäsche.
+- **Möglichst alles an einem Tag** (Stichtag – das Datum wird automatisch aus dem Video gelesen). Gezählt wird, was im Video zu sehen ist – auch abgelegte Kleidung oder Wäsche.
 - **Nichts vergessen:** Keller, Dachboden, Garage, Gartenhaus, Garten, Fahrräder, Flure, Treppen (eigenes Video).
 - **Auflösung:** 1080p reicht. 4K nur, wenn viele kleine Beschriftungen lesbar sein sollen – braucht viel Speicher.
 - Videos in den Ordner `Videos/` des Projektordners legen und dem Agenten Bescheid sagen. **Originalvideos aufbewahren** – sie sind das Beweismittel.

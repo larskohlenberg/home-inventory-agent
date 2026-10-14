@@ -1,0 +1,5 @@
+Pillow>=10.1
+openpyxl>=3.1
+faster-whisper>=1.1
+imageio-ffmpeg>=0.5
+playwright>=1.45

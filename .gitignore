@@ -1,0 +1,12 @@
+.DS_Store
+.venv/
+__pycache__/
+# Nutzerdaten gehören nie ins Repo
+/Videos/
+/Fotos/
+/Belege/
+/Standbilder/
+/Nachweise/
+/data/
+/.work/
+/Inventar.xlsx
